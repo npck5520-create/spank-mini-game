@@ -2,534 +2,179 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="utf-8" />
-<title>Spank Game — 可愛 / 酷炫螢光</title>
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Spank Game — 可愛風 / 酷炫風</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <style>
-
-/* 整體最大寬度與置中 */
-.layout {
-  max-width: 1400px;
-  margin: 0 auto;
-  display: flex;
-  flex-wrap: wrap;
-}
-
-/* 左右欄比例 */
-.left-panel {
-  flex: 0 0 60%;
-  max-width: 60%;
-}
-.right-panel {
-  flex: 0 0 40%;
-  max-width: 40%;
-}
-
-/* 抽籤結果區塊加大與間距 */
-#result {
-  min-height: 120px;
-  margin-bottom: 15px;
-}
-
-/* 歷史紀錄高度限制更小，防止擠壓 */
-#historyList {
-  max-height: 12vh;
-  overflow-y: auto;
-}
-
-/* 手機版恢復滿版顯示 */
-@media (max-width: 768px) {
-  .left-panel, .right-panel {
-    flex: 1 1 100%;
-    max-width: 100%;
-  }
-}
-
-
-/* 優化按鈕外觀與間距 */
-.buttons button {
-  padding: 12px 20px;
-  font-size: 1.1em;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-/* 按鈕顏色區分 */
-#drawBtn {
-  background-color: #ff85a2;
-  color: white;
-}
-#stopBtn {
-  background-color: #f9d56e;
-  color: black;
-}
-#resetBtn {
-  background-color: #9be3de;
-  color: black;
-}
-
-/* hover 效果 */
-.buttons button:hover {
-  transform: scale(1.05);
-  filter: brightness(1.1);
-}
-
-/* disabled 狀態 */
-.buttons button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none;
-}
-
-
-/* 左欄改為垂直排列 */
-.left-panel {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-/* 抽籤結果字體自適應大小 */
-#result {
-  font-size: clamp(1.2em, 2vw, 1.8em);
-  padding: 15px;
-}
-
-/* 按鈕區自動換行且保持間距 */
-.buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
-}
-
-/* 右欄固定寬度，防止擠壓左欄 */
-.right-panel {
-  flex: 1 1 300px;
-  min-width: 300px;
-  max-width: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
-  word-break: break-word;
-}
-
-/* 桌機模式確保左右並列 */
-.layout {
-  align-items: flex-start;
-}
-
-/* 手機版上下排列 */
-@media (max-width: 768px) {
-  .left-panel, .right-panel {
-    flex: 1 1 100%;
-    max-width: 100%;
-    min-width: unset;
-  }
-}
-
-
-/* 調整 layout 對齊，避免垂直置中導致跑版 */
-.layout {
-  align-items: flex-start;
-}
-
-/* 左欄：固定最大寬度，允許縮小 */
-.left-panel {
-  flex: 1 1 500px;
-  max-width: 500px;
-  min-width: 300px;
-}
-
-/* 抽籤結果字體大小自適應 */
-#result {
-  font-size: clamp(1.2em, 2vw, 1.8em);
-}
-
-/* 右欄：固定最小寬度，防止被擠壓，超出換行 */
-.right-panel {
-  flex: 1 1 300px;
-  min-width: 300px;
-  max-width: 100%;
-  overflow-x: hidden;
-  word-break: break-word;
-}
-
-/* 手機版仍然上下佈局 */
-@media (max-width: 768px) {
-  .left-panel, .right-panel {
-    flex: 1 1 100%;
-    max-width: 100%;
-    min-width: unset;
-  }
-}
-
-
-/* 固定左右欄寬度比例 */
-.left-panel {
-  flex: 0 0 500px; /* 固定寬度 */
-  max-width: 500px;
-}
-.right-panel {
-  flex: 1;
-  min-width: 300px;
-}
-
-/* 保持手機版上下佈局 */
-@media (max-width: 768px) {
-  .left-panel, .right-panel {
-    flex: 1 1 100%;
-    max-width: 100%;
-  }
-}
-
-
-/* 抽籤結果卡片樣式 */
-#result {
-  background: linear-gradient(135deg, #fff5f5, #ffe0e0);
-  border: 2px solid #ff8080;
-  border-radius: 12px;
-  padding: 20px;
-  font-size: 1.8em;
-  font-weight: bold;
-  text-align: center;
-  color: #d63333;
-  margin-bottom: 20px;
-  box-shadow: 0 4px 12px rgba(255,128,128,0.3);
-}
-
-
-/* 左右分欄佈局 */
-.layout {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-}
-.left-panel {
-  flex: 1 1 50%;
-  min-width: 280px;
-}
-.right-panel {
-  flex: 1 1 40%;
-  min-width: 250px;
-}
-
-/* 手機版上下佈局 */
-@media (max-width: 768px) {
-  .layout {
-    flex-direction: column;
-  }
-  .left-panel, .right-panel {
-    flex: 1 1 100%;
-    min-width: unset;
-  }
-}
-
-/* 調整歷史紀錄框高度 */
-#history {
-  max-height: 15vh !important;
-  overflow-y: auto !important;
-}
-
-/* 手機模式按鈕區間距 */
-@media (max-width: 768px) {
-  .buttons {
-    margin-top: 10px;
-    margin-bottom: 15px;
-  }
-}
-
-
-@media (max-width: 768px) {
-  .buttons {
-    margin-top: 10px;
-    margin-bottom: 15px;
-  }
-}
-
-
-/* 垂直置中整體版面（僅在內容高度小於螢幕時） */
-html, body {
-  height: 100%;
-}
-body.center-layout {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-/* 歷史紀錄框更小（手機版） */
-@media (max-width: 768px) {
-  #history {
-    max-height: 15vh !important;
-    overflow-y: auto !important;
-  }
-}
-
-
-/* 按鈕區固定在畫面正中央 */
-.buttons {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin: 0 auto;
-}
-@media (max-width: 768px) {
-  .buttons {
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    max-width: 400px;
-  }
-  .buttons button {
-    flex: 1 1 100%;
-    min-height: 50px;
-    font-size: 1.2em;
-  }
-}
-
-
-/* 歷史紀錄固定高度，避免按鈕被擠跑 */
-@media (max-width: 768px) {
-  #history {
-    max-height: 18vh !important; /* 限制歷史紀錄高度為螢幕的25% */
-    overflow-y: auto !important; /* 超出時內部滾動 */
-    padding-bottom: 5px;
-  }
-  #historyList {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-  #historyList li {
-    word-break: break-word;
-    padding: 4px 0;
-    border-bottom: 1px solid #eee;
-  }
-}
-
-
-/* 手機防跑版按鈕布局 */
-@media (max-width: 768px) {
-  .buttons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    width: 100%;
-    max-width: 400px;
-    margin: 10px auto 0 auto;
-    justify-content: center;
-    position: relative;
-    z-index: 1000;
-  }
-  .buttons button {
-    flex: 1 1 100%;
-    font-size: 1.2em;
-    min-height: 50px;
-    padding: 12px;
-    border-radius: 10px;
-  }
-  #result {
-    margin-bottom: 10px;
-  }
-  #history {
-    max-height: 18vh;
-    overflow-y: auto;
-  }
-}
-
-
-/* 手機完全穩定版 RWD */
-@media (max-width: 768px) {
-  body { padding: 10px; font-size: 14px; }
-  h1 { font-size: 2em; text-align: center; }
-  .status { 
-    flex-direction: column; 
-    gap: 10px; 
-    font-size: 1em; 
-    align-items: center; 
-  }
-  /* 模式選擇與狀態區塊置中 */
-  select { font-size: 1.1em; padding: 8px; max-width: 100%; }
-  
-  /* 按鈕區域確保可點擊且不重疊 */
-  .buttons { 
-    display: flex; 
-    flex-direction: column; 
-    gap: 10px; 
-    width: 100%; 
-    max-width: 320px; 
-    margin: 0 auto; 
-    position: relative;
-    z-index: 1000;
-  }
-  button { 
-    font-size: 1.2em; 
-    padding: 14px; 
-    min-height: 50px; 
-    width: 100%; 
-    border-radius: 10px;
-  }
-  /* 歷史紀錄高度限制 */
-  #history { 
-    max-height: 18vh; 
-    overflow-y: auto; 
-    font-size: 0.9em; 
-    position: relative; 
-    z-index: 1;
-  }
-  /* 抽籤結果顯示區塊 */
-  #result { 
-    font-size: 1.4em; 
-    padding: 10px; 
-    word-break: break-word; 
-    text-align: center; 
-    position: relative; 
-    z-index: 1;
-  }
-}
-@media (max-width: 480px) {
-  h1 { font-size: 1.6em; }
-  .status { font-size: 0.9em; }
-  button { font-size: 1.1em; padding: 12px; min-height: 46px; }
-  #result { font-size: 1.2em; }
-}
-
-
-/* 手機全螢幕優化 + 按鈕可點擊保證 */
-@media (max-width: 768px) {
-  body { padding: 10px; font-size: 14px; }
-  h1 { font-size: 2em; text-align: center; }
-  .status { flex-direction: column; gap: 10px; font-size: 1em; align-items: center; }
-  .buttons { 
-    display: flex; 
-    flex-direction: column; 
-    gap: 10px; 
-    width: 100%; 
-    max-width: 320px; 
-    margin: 0 auto; 
-    position: relative;
-    z-index: 1000; /* 確保在最上層可點 */
-  }
-  button { font-size: 1.2em; padding: 14px; min-height: 48px; width: 100%; }
-  #history { max-height: 18vh; overflow-y: auto; font-size: 0.9em; position: relative; z-index: 1; }
-  #result { font-size: 1.4em; padding: 10px; word-break: break-word; text-align: center; position: relative; z-index: 1; }
-}
-@media (max-width: 480px) {
-  h1 { font-size: 1.6em; }
-  .status { font-size: 0.9em; }
-  button { font-size: 1.1em; padding: 12px; min-height: 46px; }
-  #result { font-size: 1.2em; }
-}
-
   :root{
+    --container-w: min(95vw, 1200px);
+    --gap: 16px;
     --glass: rgba(0,0,0,0.08);
     --light-bg1:#fff8fb; --light-bg2:#fff;
     --accent:#ff6b9a;
   }
-  html,body{height:100%;margin:0;font-family:"Microsoft JhengHei",sans-serif}
-  body{display:flex;align-items:center;justify-content:center;padding:18px;background:var(--light-bg1)}
-  .app{width:100%;max-width:980px;border-radius:12px;overflow:hidden;box-shadow:0 14px 40px rgba(0,0,0,0.12)}
-  .panel{padding:0;background:linear-gradient(180deg,var(--light-bg2),#fff)}
 
-  /* Mode overlay */
-  #modeSelectOverlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(0,0,0,0.28),rgba(0,0,0,0.45));z-index:30}
-  .modeBox{background:linear-gradient(180deg,#fff,#fff8fb);padding:20px;border-radius:12px;width:min(900px,94%);display:flex;gap:18px;flex-wrap:wrap;box-shadow:0 18px 60px rgba(0,0,0,0.4)}
-  .modeItem{flex:1;min-width:260px;padding:18px;border-radius:10px;text-align:center}
-  .modeLight{background:linear-gradient(180deg,#fff0f5,#ffeef2);border:1px solid #ffd6e8}
-  .modeDark{background:linear-gradient(180deg,#061018,#071522);color:#e6f7ff;border:1px solid rgba(255,255,255,0.04)}
-  .modeBtn{margin-top:12px;padding:10px 18px;border-radius:8px;border:none;font-weight:700;cursor:pointer}
-  .modeBtnLight{background:#ff6b9a;color:#fff}
-  .modeBtnDark{background:#00d7ff;color:#022}
+  html,body{height:100%;margin:0;font-family:"Microsoft JhengHei",system-ui,-apple-system,Segoe UI,Arial,sans-serif}
+  body{
+    background: var(--light-bg1);
+    display:flex; align-items:flex-start; justify-content:center;
+    padding: clamp(12px, 2vw, 24px);
+  }
 
-  /* topbar */
-  .topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:transparent}
-  .title{font-size:1.4rem;font-weight:800}
-  .controls{display:flex;gap:8px;align-items:center}
-  select,button{padding:8px 10px;border-radius:8px;border:none;cursor:pointer}
-  /* main layout */
-  .main{display:flex;gap:14px;padding:18px}
-  .left{flex:1;background:rgba(255,255,255,0.92);border-radius:10px;padding:14px;box-shadow:0 6px 18px var(--glass)}
-  .right{width:320px;min-width:260px;background:rgba(255,255,255,0.92);border-radius:10px;padding:14px;box-shadow:0 6px 18px var(--glass)}
+  /* 容器：會隨螢幕放大，不再擠在中間 */
+  .app{
+    width: var(--container-w);
+    border-radius: 14px; overflow:hidden;
+    box-shadow: 0 16px 48px rgba(0,0,0,.12);
+    background: linear-gradient(180deg,var(--light-bg2),#fff);
+  }
 
-  .stats{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
-  .stat{padding:8px 10px;border-radius:8px;font-weight:700}
-  .stat.score{background:linear-gradient(180deg,#fff9db,#fff2c2);color:#a65a00}
-  .stat.redButt{background:linear-gradient(180deg,#ffe9e9,#ffdede);color:#b33a3a}
-  .stat.total{background:linear-gradient(180deg,#eaf7ff,#d9f0ff);color:#0b6d91}
+  /* 頂部列 */
+  .topbar{
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 14px clamp(14px, 2vw, 22px);
+    gap: 12px;
+  }
+  .title{font-weight: 900; font-size: clamp(18px, 2.2vw, 28px)}
+  .controls{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
+  select, button{
+    padding: 10px 12px; border-radius: 10px; border:none; cursor:pointer;
+    font-weight: 700; font-size: 15px;
+  }
+  #drawBtn{ background: linear-gradient(90deg,#ff6b9a,#ff85a2); color:#fff }
+  #stopBtn{ background: #ffb86b; color:#000 }
+  #resetBtn{ background: #bdbdbd; color:#021 }
+  #drawBtn:disabled,#stopBtn:disabled{ opacity:.55; cursor:not-allowed }
 
-  #result{height:88px;display:flex;align-items:center;justify-content:center;font-size:1.15rem;font-weight:700;margin-top:12px;border-radius:10px;background:linear-gradient(180deg,#ffffff,#fffaf7);box-shadow:inset 0 2px 6px rgba(0,0,0,0.03)}
+  /* 主要版面：左右分欄（左：結果與按鈕；右：說明與歷史） */
+  .layout{
+    display:grid;
+    gap: var(--gap);
+    padding: clamp(12px, 2vw, 20px);
+    grid-template-columns: 1.6fr 1fr; /* 大螢幕更寬敞 */
+    align-items:start;
+  }
 
-  #history{margin-top:14px;max-height:420px;overflow:auto;padding:8px;background:rgba(255,255,255,0.95);border-radius:8px}
-  .history-item{padding:8px;border-bottom:1px solid #f1f1f1;font-size:0.95rem;color:#333}
-  .history-item:last-child{border-bottom:none}
+  /* 左欄 */
+  .leftCol{ display:grid; gap: var(--gap) }
+  .stats{
+    display:flex; gap:10px; flex-wrap:wrap; align-items:center
+  }
+  .stat{
+    padding: 10px 12px; border-radius: 10px; font-weight: 800; font-size: 14px
+  }
+  .stat.score{ background:linear-gradient(180deg,#fff9db,#fff2c2); color:#a65a00 }
+  .stat.redButt{ background:linear-gradient(180deg,#ffe9e9,#ffdede); color:#b33a3a }
+  .stat.total{ background:linear-gradient(180deg,#eaf7ff,#d9f0ff); color:#0b6d91 }
 
-  /* buttons */
-  #drawBtn{background:linear-gradient(90deg,#ff6b9a,#ff85a2);color:#fff;font-weight:800;padding:10px 16px;border-radius:10px;font-size:1rem}
-  #stopBtn{background:#ffb86b;color:#000;padding:8px 12px}
-  #resetBtn{background:#bdbdbd;color:#021;padding:8px 12px}
-  #drawBtn:disabled,#stopBtn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+  /* 抽籤結果：獨立大卡片，醒目 */
+  .resultCard{
+    padding: clamp(16px, 2vw, 22px);
+    border-radius: 14px;
+    background: linear-gradient(180deg,#ffffff,#fff9f5);
+    box-shadow: inset 0 2px 6px rgba(0,0,0,.03);
+    min-height: clamp(88px, 12vh, 150px);
+    display:flex; align-items:center; justify-content:center;
+  }
+  #result{
+    font-size: clamp(20px, 2.4vw, 30px);
+    font-weight: 900;
+    text-align:center;
+    color:#d6336c;
+  }
 
-  /* pop animation */
-  .pop{animation:pop 0.55s ease forwards;color:var(--accent)}
+  /* 按鈕區固定在左欄下方，不與結果同一塊 */
+  .btnRow{
+    display:flex; gap:10px; flex-wrap:wrap;
+  }
+
+  /* 右欄：說明 + 歷史紀錄 */
+  .rightCol{ display:grid; gap: var(--gap) }
+  .card{
+    background: rgba(255,255,255,0.96);
+    border-radius: 12px;
+    padding: clamp(12px, 2vw, 18px);
+    box-shadow: 0 6px 18px var(--glass);
+  }
+  .card h3{ margin:4px 0 10px 0 }
+  #history{
+    max-height: clamp(150px, 22vh, 280px); /* 右側歷史區較小，避免擠壓 */
+    overflow: auto;
+  }
+  .history-item{
+    padding: 8px 2px; border-bottom: 1px solid #eee; font-size: 14px; color:#333
+  }
+  .history-item:last-child{ border-bottom:none }
+
+  /* 進場動畫 */
+  .pop{ animation:pop .55s ease forwards; color:var(--accent)}
   @keyframes pop{0%{transform:scale(.6);opacity:0}70%{transform:scale(1.12);opacity:1}100%{transform:scale(1)}}
 
-  /* dark / neon theme */
-  .theme-dark body, .theme-dark { background: linear-gradient(180deg,#041018,#031018) }
-  .theme-dark .panel{background:linear-gradient(180deg,#071322,#041018); color:#e8f6ff}
-  .theme-dark .left,.theme-dark .right{ background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); color:#dbeefe}
-  .theme-dark .history-item{color:#cbd5e1;border-bottom:1px solid rgba(255,255,255,0.02)}
-  .theme-dark #result{background:linear-gradient(180deg,#071322,#041018); box-shadow: inset 0 2px 8px rgba(0,0,0,0.6)}
-  .theme-dark .stat.score{color:#ffe58a;background:transparent}
-  .theme-dark .stat.redButt{color:#ff9aa2;background:transparent}
-  .theme-dark .stat.total{color:#b9f;background:transparent}
-
-  /* neon text & buttons for neon dark mode */
-  .neon-h1{ color:#00ffff; text-shadow:0 0 8px #00ffff,0 0 20px rgba(0,255,255,0.08); }
-  .neon-result{ color:#ff66ff; text-shadow:0 0 10px #ff66ff,0 0 22px rgba(255,102,255,0.06) }
-  .neon-stat{ text-shadow:0 0 6px rgba(255,255,255,0.03) }
-
-  .neon-btn {
-    box-shadow: 0 8px 30px rgba(0,215,255,0.08), inset 0 -2px 10px rgba(0,0,0,0.15);
-    border: 1px solid rgba(0,215,255,0.15);
-    transition: transform .08s, box-shadow .12s;
+  /* 模式選單 Overlay */
+  #modeSelectOverlay{
+    position: fixed; inset: 0; z-index: 50;
+    display:flex; align-items:center; justify-content:center;
+    background: linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,.45));
+    padding: 20px;
   }
-  .neon-btn:hover { transform:translateY(-3px); box-shadow:0 14px 40px rgba(0,215,255,0.12) }
+  .modeBox{
+    width: min(100%, 980px);
+    display:grid; gap: 16px;
+    grid-template-columns: 1fr 1fr;
+  }
+  .modeItem{
+    border-radius: 14px; padding: 18px; text-align:center;
+    box-shadow: 0 18px 50px rgba(0,0,0,.25);
+  }
+  .modeLight{ background: linear-gradient(180deg,#fff,#fff8fb); border:1px solid #ffd6e8 }
+  .modeDark{ background: linear-gradient(180deg,#061018,#071522); border:1px solid rgba(255,255,255,.06); color:#e6f7ff }
+  .modeBtn{ margin-top: 12px; padding: 12px 18px; border-radius: 10px; border:none; font-weight: 900; cursor:pointer }
+  .modeBtnLight{ background:#ff6b9a; color:#fff }
+  .modeBtnDark{ background:#00d7ff; color:#022 }
 
-  /* neon colors for important text */
-  .neon-score{ color:#ffea00; text-shadow:0 0 8px rgba(255,234,0,0.4) }
-  .neon-redButt{ color:#ff9aa2; text-shadow:0 0 8px rgba(255,154,162,0.18) }
+  /* 深色 / 螢光風格 */
+  .theme-dark body, .theme-dark{ background: linear-gradient(180deg,#041018,#031018) }
+  .theme-dark .app{ background: linear-gradient(180deg,#071322,#041018); color:#e8f6ff }
+  .theme-dark .card{ background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)); color:#dbeefe }
+  .theme-dark .resultCard{ background: linear-gradient(180deg,#071322,#041018); box-shadow: inset 0 2px 10px rgba(0,0,0,.6) }
+  .neon-h1{ color:#00ffff; text-shadow:0 0 8px #00ffff,0 0 20px rgba(0,255,255,0.10) }
+  .neon-result{ color:#ff80ff; text-shadow:0 0 10px #ff66ff,0 0 22px rgba(255,102,255,0.08) }
+  .theme-dark .stat.score{ color:#ffe58a; background:transparent }
+  .theme-dark .stat.redButt{ color:#ff9aa2; background:transparent }
+  .theme-dark .stat.total{ color:#b9f; background:transparent }
 
-  @media (max-width:900px){ .main{flex-direction:column} .right{width:100%} }
+  /* RWD：平板以下改為單欄堆疊；按鈕可點不重疊 */
+  @media (max-width: 900px){
+    .layout{ grid-template-columns: 1fr }
+    .btnRow{ position: relative; z-index: 5 }
+  }
 </style>
 </head>
 <body>
-<div class="layout"><div class="left-panel" class=\"center-layout\">
-  <!-- mode choose overlay -->
+  <!-- 模式選擇 -->
   <div id="modeSelectOverlay" role="dialog" aria-modal="true">
     <div class="modeBox">
       <div class="modeItem modeLight">
-        <h2>可愛亮色風 — 新手模式</h2>
-        <p>懲罰次數 5 ~ 50，會出護盾、會出分數加倍，第一次不會出分數減半/歸零</p>
-        <button class="modeBtn modeBtnLight" id="chooseNormal" data-mode="normal">選一般模式</button>
+        <h2>可愛亮色風（一般模式）</h2>
+        <p>懲罰 5~50，下次加分翻倍＆護盾可能出現；第一次不會出減半/歸零。</p>
+        <button class="modeBtn modeBtnLight" id="chooseNormal">進入一般模式</button>
       </div>
       <div class="modeItem modeDark">
-        <h2 style="color:#9feaff">酷炫螢光風 — 討打模式</h2>
-        <p style="color:#cfeeff">懲罰次數 20 ~ 80，無護盾，減半/歸零機率較高，第一次不會出減半/歸零</p>
-        <button class="modeBtn modeBtnDark" id="chooseHard" data-mode="hard">選困難模式</button>
+        <h2 style="color:#9feaff">酷炫螢光風（困難模式）</h2>
+        <p style="color:#cfeeff">懲罰 20~80，無護盾/無加倍；減半/歸零機率更高（首抽不會）。</p>
+        <button class="modeBtn modeBtnDark" id="chooseHard">進入困難模式</button>
       </div>
     </div>
   </div>
 
-  <div class="app panel theme-light" id="app">
+  <!-- APP -->
+  <div class="app theme-light" id="app">
     <div class="topbar">
-      <div class="title">Spank Game</div>
+      <div class="title" id="title">Spank Game</div>
       <div class="controls">
         <label for="modeSelect">模式</label>
         <select id="modeSelect" aria-label="切換模式">
-          <option value="normal">一般</option>
-          <option value="hard">困難</option>
+          <option value="normal">一般（可愛風）</option>
+          <option value="hard">困難（酷炫風）</option>
         </select>
         <button id="drawBtn">抽 籤</button>
         <button id="stopBtn" disabled>停止</button>
@@ -537,50 +182,69 @@ body.center-layout {
       </div>
     </div>
 
-    <div class="main">
-      <div class="left">
+    <div class="layout">
+      <!-- 左：結果 + 按鈕 + 狀態 -->
+      <div class="leftCol">
         <div class="stats">
           <div class="stat score">分數：<span id="score">0</span></div>
           <div class="stat redButt">紅屁屁值：<span id="redButt">5</span></div>
           <div class="stat total">總挨打次數：<span id="totalHits">0</span></div>
         </div>
 
-        <div id="result">請先選擇模式（或按開始抽籤）</div>
+        <div class="resultCard">
+          <div id="result">請先選擇模式，或直接開始抽籤！</div>
+        </div>
 
-        </div><div class="right-panel"><div id="history" aria-live="polite" aria-label="抽籤歷史紀錄"></div>
+        <div class="btnRow">
+          <button id="drawBtn2">抽 籤</button>
+          <button id="stopBtn2" disabled>停止</button>
+          <button id="resetBtn2">重新開始</button>
+        </div>
       </div>
 
-      <div class="right">
-        <h3>遊戲說明</h3>
-        <ul style="text-align:left;padding-left:18px">
-          <li>抽籤決定懲罰。</li>
-          <li>懲罰籤：只計入總挨打（不加分）；若有護盾則免除。</li>
-          <li>加分籤：增加分數（分數 ≥ 100 結束遊戲）。</li>
-          <li>特殊事件：分數減半、分數歸零、紅屁屁 ±1、下一輪懲罰×3、護盾（一般模式）、分數加倍（一般模式）。</li>
-          <li>第一次抽籤不會出現分數減半或歸零。</li>
-        </ul>
+      <!-- 右：說明 + 歷史 -->
+      <div class="rightCol">
+        <div class="card">
+          <h3>遊戲說明</h3>
+          <ul style="margin:0; padding-left: 18px; line-height:1.6">
+            <li>抽籤決定事件。</li>
+            <li>懲罰籤：只計入「總挨打」，不加分；若有護盾（僅一般）則免除。</li>
+            <li>加分籤：分數上升；分數 ≥ 100 結束並顯示總挨打。</li>
+            <li>特殊：分數減半、分數歸零、紅屁屁 ±1、下一輪懲罰 ×3、護盾（一般）、下次加分翻倍（一般）。</li>
+            <li>兩種模式首抽都不出分數減半 / 歸零。</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>歷史紀錄</h3>
+          <div id="history" aria-live="polite" aria-label="抽籤歷史紀錄"></div>
+        </div>
       </div>
     </div>
   </div>
 
 <script>
-/* ------------------------------
-   元件與狀態
-   ------------------------------ */
+/* 狀態與元素 */
 const overlay = document.getElementById('modeSelectOverlay');
 const chooseNormal = document.getElementById('chooseNormal');
-const chooseHard = document.getElementById('chooseHard');
+const chooseHard   = document.getElementById('chooseHard');
 
 const app = document.getElementById('app');
+const titleEl = document.getElementById('title');
 const modeSelect = document.getElementById('modeSelect');
-const drawBtn = document.getElementById('drawBtn');
-const stopBtn = document.getElementById('stopBtn');
-const resetBtn = document.getElementById('resetBtn');
 const resultEl = document.getElementById('result');
 const historyEl = document.getElementById('history');
 const scoreEl = document.getElementById('score');
 const redButtEl = document.getElementById('redButt');
 const totalHitsEl = document.getElementById('totalHits');
+
+/* 兩組按鈕（上排、下排都能操作） */
+const drawBtn  = document.getElementById('drawBtn');
+const stopBtn  = document.getElementById('stopBtn');
+const resetBtn = document.getElementById('resetBtn');
+const drawBtn2  = document.getElementById('drawBtn2');
+const stopBtn2  = document.getElementById('stopBtn2');
+const resetBtn2 = document.getElementById('resetBtn2');
 
 let mode = 'normal';
 let score = 0;
@@ -589,36 +253,45 @@ let totalHits = 0;
 let drawCount = 0;
 let gameStarted = false;
 
-// rolling
 let rolling = false;
 let rollTimer = null;
 let rollStep = 0;
 let rollMax = 0;
 
-// flags
 let nextTriple = false;
 let shieldActive = false;
 let luckyDouble = false;
 
-// tools
 const tools = ["巴掌","戒尺","浴刷","小紅","小綠","塑膠棍","小黑棍","藤條","木板"];
 
-/* ------------------------------
-   音效（共用 AudioContext）
-   ------------------------------ */
-function audioCtx(){ if(!window.__spankCtx) window.__spankCtx = new (window.AudioContext || window.webkitAudioContext)(); return window.__spankCtx; }
-function playClick(){ const ctx=audioCtx(); const o=ctx.createOscillator(); const g=ctx.createGain(); o.type='square'; o.frequency.value=820; g.gain.value=0.04; o.connect(g); g.connect(ctx.destination); o.start(); o.stop(ctx.currentTime+0.04); }
-function playDing(){ const ctx=audioCtx(); const o=ctx.createOscillator(); const g=ctx.createGain(); o.type='sine'; o.frequency.setValueAtTime(1100,ctx.currentTime); o.frequency.exponentialRampToValueAtTime(1900,ctx.currentTime+0.26); g.gain.setValueAtTime(0.12,ctx.currentTime); g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.28); o.connect(g); g.connect(ctx.destination); o.start(); o.stop(ctx.currentTime+0.28); }
+/* 聲音（共用 AudioContext） */
+function audioCtx(){
+  if(!window.__spankCtx){ window.__spankCtx = new (window.AudioContext||window.webkitAudioContext)(); }
+  return window.__spankCtx;
+}
+function playClick(){
+  const ctx=audioCtx(); const o=ctx.createOscillator(); const g=ctx.createGain();
+  o.type='square'; o.frequency.value=820; g.gain.value=0.04;
+  o.connect(g); g.connect(ctx.destination); o.start(); o.stop(ctx.currentTime+0.04);
+}
+function playDing(){
+  const ctx=audioCtx(); const o=ctx.createOscillator(); const g=ctx.createGain();
+  o.type='sine';
+  o.frequency.setValueAtTime(1100,ctx.currentTime);
+  o.frequency.exponentialRampToValueAtTime(1900,ctx.currentTime+0.26);
+  g.gain.setValueAtTime(0.12,ctx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.28);
+  o.connect(g); g.connect(ctx.destination); o.start(); o.stop(ctx.currentTime+0.28);
+}
 
-/* ------------------------------
-   UI helpers
-   ------------------------------ */
+/* 小工具 */
+function randInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
 function appendHistory(txt){
   const d = document.createElement('div');
   d.className = 'history-item';
   d.textContent = txt;
   historyEl.prepend(d);
-  while(historyEl.children.length > 300) historyEl.removeChild(historyEl.lastChild);
+  while(historyEl.children.length > 300){ historyEl.removeChild(historyEl.lastChild); }
 }
 function renderStats(){
   scoreEl.textContent = score;
@@ -626,105 +299,87 @@ function renderStats(){
   totalHitsEl.textContent = totalHits;
 }
 
-/* ------------------------------
-   Random helper
-   ------------------------------ */
-function randInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
-
-/* ------------------------------
-   Theme / Mode apply
-   ------------------------------ */
+/* 模式與主題 */
 function applyTheme(m){
-  mode = m;
-  modeSelect.value = m;
+  mode = m; modeSelect.value = m;
   if(m === 'normal'){
-    app.classList.remove('theme-dark');
-    app.classList.add('theme-light');
-    app.querySelector('.title').classList.remove('neon-h1');
-    // ensure light visuals
-    document.body.style.background = 'var(--light-bg1)';
-  } else {
-    app.classList.remove('theme-light');
-    app.classList.add('theme-dark');
-    // neon styling: apply neon classes
-    app.querySelector('.title').classList.add('neon-h1');
-    document.body.style.background = 'linear-gradient(180deg,#041018,#031018)';
+    app.classList.remove('theme-dark'); app.classList.add('theme-light');
+    titleEl.classList.remove('neon-h1'); document.body.style.background = 'var(--light-bg1)';
+  }else{
+    app.classList.remove('theme-light'); app.classList.add('theme-dark');
+    titleEl.classList.add('neon-h1'); document.body.style.background = 'linear-gradient(180deg,#041018,#031018)';
   }
-  resultEl.textContent = '模式已切換，準備開始遊戲。';
+  resultEl.textContent = '模式已切換，準備開始！';
 }
 
-/* overlay buttons */
+/* 入口選單 */
 chooseNormal.addEventListener('click', ()=>{ overlay.style.display='none'; applyTheme('normal'); });
-chooseHard.addEventListener('click', ()=>{ overlay.style.display='none'; applyTheme('hard'); });
+chooseHard.addEventListener('click',   ()=>{ overlay.style.display='none'; applyTheme('hard'); });
 modeSelect.addEventListener('change', e => applyTheme(e.target.value));
 
-/* ------------------------------
-   game params per mode
-   ------------------------------ */
+/* 各模式參數 */
 function getParams(isFirst){
   let p = {};
-  if(mode === 'normal'){
-    p.penMin = 5; p.penMax = 50; p.gainMin = 5; p.gainMax = 20;
-    p.gainProb = 0.36; p.penaltyProb = 0.30;
-    p.halfProb = isFirst?0:0.12; p.zeroProb = isFirst?0:0.06;
-    p.specialProb = 0.06; p.luckyProb = (drawCount>=5)?0.01:0;
-    p.shieldProb = (drawCount>=5)?0.015:0;
-    p.smallPenaltyBoostProb = 0.015; p.doublePenaltyProb = 0.005;
-  } else {
-    p.penMin = 20; p.penMax = 80; p.gainMin = 3; p.gainMax = 15;
-    p.gainProb = 0.30; p.penaltyProb = 0.40;
-    p.halfProb = isFirst?0:0.20; p.zeroProb = isFirst?0:0.12;
-    p.specialProb = 0.08; p.luckyProb = (drawCount>=5)?0.008:0;
-    p.shieldProb = 0; p.smallPenaltyBoostProb = 0.02; p.doublePenaltyProb = 0.01;
+  if(mode==='normal'){
+    p.penMin=5;  p.penMax=50;
+    p.gainMin=5; p.gainMax=20;
+
+    p.gainProb=0.36;  p.penaltyProb=0.30;
+    p.halfProb=isFirst?0:0.12;
+    p.zeroProb=isFirst?0:0.06;
+
+    p.specialProb=0.06; p.luckyProb=(drawCount>=5)?0.01:0;
+    p.shieldProb=(drawCount>=5)?0.015:0;
+
+    p.smallPenaltyBoostProb=0.015;
+    p.doublePenaltyProb=0.005;
+  }else{ // hard
+    p.penMin=20; p.penMax=80;
+    p.gainMin=3; p.gainMax=15;
+
+    p.gainProb=0.30; p.penaltyProb=0.40;
+    p.halfProb=isFirst?0:0.20;
+    p.zeroProb=isFirst?0:0.12;
+
+    p.specialProb=0.08; p.luckyProb=(drawCount>=5)?0.008:0;
+    p.shieldProb=0;
+
+    p.smallPenaltyBoostProb=0.02;
+    p.doublePenaltyProb=0.01;
   }
   return p;
 }
 
-/* ------------------------------
-   roll animation (progressively slows)
-   ------------------------------ */
+/* 抽籤動畫（漸慢） */
 function startRollAnimation(){
   if(rolling) return;
   rolling = true;
-  drawBtn.disabled = true;
-  stopBtn.disabled = false;
-  rollStep = 0;
-  rollMax = randInt(18,28);
-  const baseSpeed = 50;
+  setBtns(true);
+  rollStep = 0; rollMax = randInt(18,28);
+  const base=50;
 
   function tick(){
     const tool = tools[randInt(0,tools.length-1)];
-    const previewMin = (mode==='normal'?5:20);
-    const previewMax = (mode==='normal'?50:80);
-    const hitsPreview = randInt(previewMin, previewMax);
-    resultEl.textContent = `${tool} ${hitsPreview} 下`;
+    const hits = randInt(mode==='normal'?5:20, mode==='normal'?50:80);
+    resultEl.textContent = `${tool} ${hits} 下`;
     playClick();
-
     rollStep++;
-    if(rollStep > rollMax){
-      if(rollTimer){ clearTimeout(rollTimer); rollTimer = null; }
-      finalizeDraw();
-      return;
-    }
-    const nextDelay = baseSpeed + Math.floor(rollStep*rollStep * 0.8);
-    rollTimer = setTimeout(tick, nextDelay);
+    if(rollStep > rollMax){ if(rollTimer){clearTimeout(rollTimer)} finalizeDraw(); return; }
+    const next = base + Math.floor(rollStep*rollStep*0.8);
+    rollTimer = setTimeout(tick, next);
   }
   tick();
 }
 
-/* ------------------------------
-   finalizeDraw: 核心機率 / 行為
-   ------------------------------ */
+/* 抽籤結算 */
 function finalizeDraw(){
-  if(rollTimer){ clearTimeout(rollTimer); rollTimer = null; }
+  if(rollTimer){ clearTimeout(rollTimer); rollTimer=null; }
   const isFirst = !gameStarted;
-  drawCount++;
-  gameStarted = true;
+  drawCount++; gameStarted = true;
 
   const p = getParams(isFirst);
   const rnd = Math.random();
 
-  // boundaries
   const gainUpper = p.gainProb;
   const penaltyUpper = gainUpper + p.penaltyProb;
   const halfUpper = penaltyUpper + p.halfProb;
@@ -733,135 +388,103 @@ function finalizeDraw(){
   const luckyUpper = specialUpper + p.luckyProb;
   const shieldUpper = luckyUpper + p.shieldProb;
 
-  let displayMsg = '';
+  let msg='';
 
-  // GAIN (加分籤)
   if(rnd < gainUpper){
     let pts = randInt(p.gainMin, p.gainMax);
-    if(luckyDouble){ pts *= 2; luckyDouble = false; displayMsg = `🎉 幸運加倍！加分 ${pts} 分`; }
-    else displayMsg = `加分 ${pts} 分`;
+    if(luckyDouble){ pts*=2; luckyDouble=false; msg=`🎉 幸運加倍！加分 ${pts} 分`; }
+    else msg=`加分 ${pts} 分`;
     score += pts;
     playDing();
   }
-  // PENALTY (懲罰籤)
   else if(rnd < penaltyUpper){
     if(shieldActive){
-      displayMsg = '🛡️ 護盾生效，懲罰免除！';
-      shieldActive = false;
-      playDing();
-    } else {
-      let times = randInt(p.penMin, p.penMax);
-      // rare extra events
-      if(Math.random() < p.doublePenaltyProb){
-        times *= 2;
-        displayMsg = `雙重懲罰！`;
-      } else if(Math.random() < p.smallPenaltyBoostProb){
-        const extra = randInt(10,20);
-        times += extra;
-        displayMsg = `懲罰次數增加 ${extra} 下！`;
-      } else {
-        displayMsg = '';
-      }
-      if(nextTriple){
-        times *= 3;
-        nextTriple = false;
-        displayMsg = (displayMsg?displayMsg + ' ':'') + '（特效：次數 ×3）';
-      }
-      const toolIdx = randInt(0, tools.length-1);
-      displayMsg = `${tools[toolIdx]} ${times} 下` + (displayMsg?(' · '+displayMsg):'');
-      totalHits += times;
-      redButt += 1;
-      playDing();
+      msg='🛡️ 護盾生效，懲罰免除！'; shieldActive=false; playDing();
+    }else{
+      let times = randInt(p.penMin,p.penMax);
+      if(Math.random()<p.doublePenaltyProb){ times*=2; msg='雙重懲罰！'; }
+      else if(Math.random()<p.smallPenaltyBoostProb){ const ex=randInt(10,20); times+=ex; msg=`懲罰次數增加 ${ex} 下！`; }
+      if(nextTriple){ times*=3; nextTriple=false; msg = (msg?msg+' ':'')+'（特效：次數 ×3）'; }
+      const tool = tools[randInt(0,tools.length-1)];
+      msg = `${tool} ${times} 下` + (msg?(' · '+msg):'');
+      totalHits += times; redButt += 1; playDing();
     }
   }
-  // HALF
   else if(rnd < halfUpper){
-    score = Math.floor(score/2);
-    displayMsg = '💔 事件：分數減半！';
-    playDing();
+    score = Math.floor(score/2); msg='💔 事件：分數減半！'; playDing();
   }
-  // ZERO
   else if(rnd < zeroUpper){
-    score = 0;
-    displayMsg = '💀 事件：分數歸零！';
-    playDing();
+    score = 0; msg='💀 事件：分數歸零！'; playDing();
   }
-  // SPECIAL
   else if(rnd < specialUpper){
-    // choose special subtype
-    const specials = [];
-    specials.push({k:'nextTriple',w:1});
-    specials.push({k:'redPlus',w:1});
-    specials.push({k:'redMinus',w:1});
-    if(mode==='normal') specials.push({k:'shield',w:1});
-    if(mode==='normal') specials.push({k:'scoreDouble',w:1});
-    let sumW = specials.reduce((s,it)=>s+it.w,0);
-    let r = Math.random()*sumW;
-    let pick = specials.find(it => { r -= it.w; return r <= 0; }).k;
+    const specials=[];
+    specials.push({k:'nextTriple',w:1},{k:'redPlus',w:1},{k:'redMinus',w:1});
+    if(mode==='normal') specials.push({k:'shield',w:1},{k:'scoreDouble',w:1});
+    let sum=specials.reduce((s,it)=>s+it.w,0);
+    let r=Math.random()*sum, pick=specials.find(it=>{r-=it.w; return r<=0;}).k;
 
-    if(pick === 'nextTriple'){ nextTriple = true; displayMsg = '🌟 特殊事件：下一輪懲罰次數 ×3！'; }
-    else if(pick === 'shield'){ shieldActive = true; displayMsg = '🛡️ 特殊事件：獲得護盾（下一次懲罰免疫）！'; }
-    else if(pick === 'redPlus'){ redButt += 1; displayMsg = '🔺 紅屁屁值 +1'; }
-    else if(pick === 'redMinus'){ redButt = Math.max(0, redButt - 1); displayMsg = '🔻 紅屁屁值 -1'; }
-    else if(pick === 'scoreDouble'){ luckyDouble = true; displayMsg = '🍀 特殊事件：下次加分翻倍！'; }
+    if(pick==='nextTriple'){ nextTriple=true; msg='🌟 特殊事件：下一輪懲罰次數 ×3！'; }
+    else if(pick==='shield'){ shieldActive=true; msg='🛡️ 特殊事件：獲得護盾！'; }
+    else if(pick==='redPlus'){ redButt+=1; msg='🔺 紅屁屁值 +1'; }
+    else if(pick==='redMinus'){ redButt=Math.max(0, redButt-1); msg='🔻 紅屁屁值 -1'; }
+    else if(pick==='scoreDouble'){ luckyDouble=true; msg='🍀 特殊事件：下次加分翻倍！'; }
     playDing();
   }
-  // LUCKY
   else if(rnd < luckyUpper){
-    luckyDouble = true;
-    displayMsg = '🍀 幸運事件：下次加分翻倍！';
-    playDing();
+    luckyDouble=true; msg='🍀 幸運事件：下次加分翻倍！'; playDing();
   }
-  // SHIELD (rare)
   else if(rnd < shieldUpper){
-    if(mode === 'normal'){ shieldActive = true; displayMsg = '🛡️ 護盾事件：下一次懲罰免疫！'; playDing(); }
-    else displayMsg = '（無事件）';
-  }
-  else {
-    displayMsg = '（無事件）';
+    if(mode==='normal'){ shieldActive=true; msg='🛡️ 護盾事件：下一次懲罰免疫！'; playDing(); }
+    else msg='（無事件）';
+  }else{
+    msg='（無事件）';
   }
 
-  if(isFirst) gameStarted = true;
   renderStats();
+  resultEl.innerHTML = `<span class="pop">${msg}</span>`;
+  appendHistory(`${msg}（分數：${score}，紅屁屁：${redButt}）`);
 
-  // show & history
-  resultEl.innerHTML = `<span class="pop">${displayMsg}</span>`;
-  appendHistory(`${displayMsg}（分數：${score}，紅屁屁：${redButt}）`);
-
-  // check end
   if(score >= 100){
     resultEl.textContent = `懲罰結束！總共挨打 ${totalHits} 下！🎉`;
     appendHistory(`*** 懲罰結束：總共挨打 ${totalHits} 下 ***`);
-    drawBtn.disabled = true; stopBtn.disabled = true; rolling = false;
-    // apply neon styles in dark mode to highlight final
-    if(mode === 'hard'){ resultEl.classList.add('neon-result'); }
+    rolling=false; setBtns(false,true);
+    if(mode==='hard'){ resultEl.classList.add('neon-result'); }
     return;
   }
 
-  // finish rolling state
-  rolling = false; drawBtn.disabled = false; stopBtn.disabled = true;
+  rolling=false; setBtns(false,false);
 }
 
-/* ------------------------------
-   controls: draw / stop / reset
-   ------------------------------ */
-drawBtn.addEventListener('click', ()=>{ if(!rolling) startRollAnimation(); });
-stopBtn.addEventListener('click', ()=>{
-  if(!rolling) return;
-  if(rollTimer){ clearTimeout(rollTimer); rollTimer = null; }
-  finalizeDraw();
-});
-resetBtn.addEventListener('click', ()=>{
-  if(rollTimer){ clearTimeout(rollTimer); rollTimer = null; }
-  rolling = false; drawBtn.disabled = false; stopBtn.disabled = true;
-  score = 0; redButt = 5; totalHits = 0; drawCount = 0; gameStarted = false;
-  nextTriple = false; shieldActive = false; luckyDouble = false;
-  historyEl.innerHTML = ''; resultEl.textContent = '已重新開始（分數與紀錄已重置）';
-  renderStats();
-});
+/* 控制按鈕狀態（兩組同步） */
+function setBtns(isRolling, finished=false){
+  const d = !!isRolling;
+  const f = !!finished;
+  [drawBtn,drawBtn2].forEach(b=> b.disabled = d || f);
+  [stopBtn,stopBtn2].forEach(b=> b.disabled = !d || f);
+  [resetBtn,resetBtn2].forEach(b=> b.disabled = false);
+}
 
-/* init */
-renderStats(); stopBtn.disabled = true;
+/* 綁定按鈕（上排與下排都能操作） */
+function onDraw(){ if(!rolling) startRollAnimation(); }
+function onStop(){
+  if(!rolling) return;
+  if(rollTimer){ clearTimeout(rollTimer); rollTimer=null; }
+  finalizeDraw();
+}
+function onReset(){
+  if(rollTimer){ clearTimeout(rollTimer); rollTimer=null; }
+  rolling=false; setBtns(false,false);
+  score=0; redButt=5; totalHits=0; drawCount=0; gameStarted=false;
+  nextTriple=false; shieldActive=false; luckyDouble=false;
+  historyEl.innerHTML=''; resultEl.textContent='已重新開始（分數與紀錄已重置）';
+  renderStats();
+}
+[drawBtn,drawBtn2].forEach(b=> b.addEventListener('click', onDraw));
+[stopBtn,stopBtn2].forEach(b=> b.addEventListener('click', onStop));
+[resetBtn,resetBtn2].forEach(b=> b.addEventListener('click', onReset));
+
+/* 初始化 */
+renderStats(); setBtns(false,false);
 </script>
 </body>
 </html>
