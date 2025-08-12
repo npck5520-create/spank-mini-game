@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<title>Spank Game — 可愛 / 酷炫螢光</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<style>
+  :root{
+    --glass: rgba(0,0,0,0.08);
+    --light-bg1:#fff8fb; --light-bg2:#fff;
+    --accent:#ff6b9a;
+  }
+  html,body{height:100%;margin:0;font-family:"Microsoft JhengHei",sans-serif}
+  body{display:flex;align-items:center;justify-content:center;padding:18px;background:var(--light-bg1)}
+  .app{width:100%;max-width:980px;border-radius:12px;overflow:hidden;box-shadow:0 14px 40px rgba(0,0,0,0.12)}
+  .panel{padding:0;background:linear-gradient(180deg,var(--light-bg2),#fff)}
+
+  /* Mode overlay */
+  #modeSelectOverlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(0,0,0,0.28),rgba(0,0,0,0.45));z-index:30}
+  .modeBox{background:linear-gradient(180deg,#fff,#fff8fb);padding:20px;border-radius:12px;width:min(900px,94%);display:flex;gap:18px;flex-wrap:wrap;box-shadow:0 18px 60px rgba(0,0,0,0.4)}
+  .modeItem{flex:1;min-width:260px;padding:18px;border-radius:10px;text-align:center}
+  .modeLight{background:linear-gradient(180deg,#fff0f5,#ffeef2);border:1px solid #ffd6e8}
+  .modeDark{background:linear-gradient(180deg,#061018,#071522);color:#e6f7ff;border:1px solid rgba(255,255,255,0.04)}
+  .modeBtn{margin-top:12px;padding:10px 18px;border-radius:8px;border:none;font-weight:700;cursor:pointer}
+  .modeBtnLight{background:#ff6b9a;color:#fff}
+  .modeBtnDark{background:#00d7ff;color:#022}
+
+  /* topbar */
+  .topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:transparent}
+  .title{font-size:1.4rem;font-weight:800}
+  .controls{display:flex;gap:8px;align-items:center}
+  select,button{padding:8px 10px;border-radius:8px;border:none;cursor:pointer}
+  /* main layout */
+  .main{display:flex;gap:14px;padding:18px}
+  .left{flex:1;background:rgba(255,255,255,0.92);border-radius:10px;padding:14px;box-shadow:0 6px 18px var(--glass)}
+  .right{width:320px;min-width:260px;background:rgba(255,255,255,0.92);border-radius:10px;padding:14px;box-shadow:0 6px 18px var(--glass)}
+
+  .stats{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
+  .stat{padding:8px 10px;border-radius:8px;font-weight:700}
+  .stat.score{background:linear-gradient(180deg,#fff9db,#fff2c2);color:#a65a00}
+  .stat.redButt{background:linear-gradient(180deg,#ffe9e9,#ffdede);color:#b33a3a}
+  .stat.total{background:linear-gradient(180deg,#eaf7ff,#d9f0ff);color:#0b6d91}
+
+  #result{height:88px;display:flex;align-items:center;justify-content:center;font-size:1.15rem;font-weight:700;margin-top:12px;border-radius:10px;background:linear-gradient(180deg,#ffffff,#fffaf7);box-shadow:inset 0 2px 6px rgba(0,0,0,0.03)}
+
+  #history{margin-top:14px;max-height:420px;overflow:auto;padding:8px;background:rgba(255,255,255,0.95);border-radius:8px}
+  .history-item{padding:8px;border-bottom:1px solid #f1f1f1;font-size:0.95rem;color:#333}
+  .history-item:last-child{border-bottom:none}
+
+  /* buttons */
+  #drawBtn{background:linear-gradient(90deg,#ff6b9a,#ff85a2);color:#fff;font-weight:800;padding:10px 16px;border-radius:10px;font-size:1rem}
+  #stopBtn{background:#ffb86b;color:#000;padding:8px 12px}
+  #resetBtn{background:#bdbdbd;color:#021;padding:8px 12px}
+  #drawBtn:disabled,#stopBtn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+  /* pop animation */
+  .pop{animation:pop 0.55s ease forwards;color:var(--accent)}
+  @keyframes pop{0%{transform:scale(.6);opacity:0}70%{transform:scale(1.12);opacity:1}100%{transform:scale(1)}}
+
+  /* dark / neon theme */
+  .theme-dark body, .theme-dark { background: linear-gradient(180deg,#041018,#031018) }
+  .theme-dark .panel{background:linear-gradient(180deg,#071322,#041018); color:#e8f6ff}
+  .theme-dark .left,.theme-dark .right{ background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); color:#dbeefe}
+  .theme-dark .history-item{color:#cbd5e1;border-bottom:1px solid rgba(255,255,255,0.02)}
+  .theme-dark #result{background:linear-gradient(180deg,#071322,#041018); box-shadow: inset 0 2px 8px rgba(0,0,0,0.6)}
+  .theme-dark .stat.score{color:#ffe58a;background:transparent}
+  .theme-dark .stat.redButt{color:#ff9aa2;background:transparent}
+  .theme-dark .stat.total{color:#b9f;background:transparent}
+
+  /* neon text & buttons for neon dark mode */
+  .neon-h1{ color:#00ffff; text-shadow:0 0 8px #00ffff,0 0 20px rgba(0,255,255,0.08); }
+  .neon-result{ color:#ff66ff; text-shadow:0 0 10px #ff66ff,0 0 22px rgba(255,102,255,0.06) }
+  .neon-stat{ text-shadow:0 0 6px rgba(255,255,255,0.03) }
+
+  .neon-btn {
+    box-shadow: 0 8px 30px rgba(0,215,255,0.08), inset 0 -2px 10px rgba(0,0,0,0.15);
+    border: 1px solid rgba(0,215,255,0.15);
+    transition: transform .08s, box-shadow .12s;
+  }
+  .neon-btn:hover { transform:translateY(-3px); box-shadow:0 14px 40px rgba(0,215,255,0.12) }
+
+  /* neon colors for important text */
+  .neon-score{ color:#ffea00; text-shadow:0 0 8px rgba(255,234,0,0.4) }
+  .neon-redButt{ color:#ff9aa2; text-shadow:0 0 8px rgba(255,154,162,0.18) }
+
+  @media (max-width:900px){ .main{flex-direction:column} .right{width:100%} }
+</style>
+</head>
+<body>
+  
+  <div id="modeSelectOverlay" role="dialog" aria-modal="true">
+    <div class="modeBox">
+      <div class="modeItem modeLight">
+        <h2>可愛亮色風 — 新手模式</h2>
+        <p>懲罰次數 5 ~ 50，會出護盾、會出分數加倍，第一次不會出分數減半/歸零</p>
+        <button class="modeBtn modeBtnLight" id="chooseNormal" data-mode="normal">選一般模式</button>
+      </div>
+      <div class="modeItem modeDark">
+        <h2 style="color:#9feaff">酷炫螢光風 — 討打模式</h2>
+        <p style="color:#cfeeff">懲罰次數 20 ~ 80，無護盾，減半/歸零機率較高，第一次不會出減半/歸零</p>
+        <button class="modeBtn modeBtnDark" id="chooseHard" data-mode="hard">選困難模式</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="app panel theme-light" id="app">
+    <div class="topbar">
+      <div class="title">Spank Game</div>
+      <div class="controls">
+        <label for="modeSelect">模式</label>
+        <select id="modeSelect" aria-label="切換模式">
+          <option value="normal">一般</option>
+          <option value="hard">困難</option>
+        </select>
+        <button id="drawBtn">抽 籤</button>
+        <button id="stopBtn" disabled>停止</button>
+        <button id="resetBtn">重新開始</button>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="left">
+        <div class="stats">
+          <div class="stat score">分數：<span id="score">0</span></div>
+          <div class="stat redButt">紅屁屁值：<span id="redButt">5</span></div>
+          <div class="stat total">總挨打次數：<span id="totalHits">0</span></div>
+        </div>
+
+        <div id="result">請先選擇模式（或按開始抽籤）</div>
+
+        <div id="history" aria-live="polite" aria-label="抽籤歷史紀錄"></div>
+      </div>
+
+      <div class="right">
+        <h3>遊戲說明</h3>
+        <ul style="text-align:left;padding-left:18px">
+          <li>抽籤決定懲罰。</li>
+          <li>懲罰籤：只計入總挨打（不加分）；若有護盾則免除。</li>
+          <li>加分籤：增加分數（分數 ≥ 100 結束遊戲）。</li>
+          <li>特殊事件：分數減半、分數歸零、紅屁屁 ±1、下一輪懲罰×3、護盾（一般模式）、分數加倍（一般模式）。</li>
+          <li>第一次抽籤不會出現分數減半或歸零。</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+<script>
+/* ------------------------------
+   元件與狀態
+   ------------------------------ */
+const overlay = document.getElementById('modeSelectOverlay');
+const chooseNormal = document.getElementById('chooseNormal');
+const chooseHard = document.getElementById('chooseHard');
+
+const app = document.getElementById('app');
+const modeSelect = document.getElementById('modeSelect');
+const drawBtn = document.getElementById('drawBtn');
+const stopBtn = document.getElementById('stopBtn');
+const resetBtn = document.getElementById('resetBtn');
+const resultEl = document.getElementById('result');
+const historyEl = document.getElementById('history');
+const scoreEl = document.getElementById('score');
+const redButtEl = document.getElementById('redButt');
+const totalHitsEl = document.getElementById('totalHits');
+
+let mode = 'normal';
+let score = 0;
+let redButt = 5;
+let totalHits = 0;
+let drawCount = 0;
+let gameStarted = false;
+
+// rolling
+let rolling = false;
+let rollTimer = null;
+let rollStep = 0;
+let rollMax = 0;
+
+// flags
+let nextTriple = false;
+let shieldActive = false;
+let luckyDouble = false;
+
+// tools
+const tools = ["巴掌","戒尺","浴刷","小紅","小綠","塑膠棍","小黑棍","藤條","木板"];
+
+/* ------------------------------
+   音效（共用 AudioContext）
+   ------------------------------ */
+function audioCtx(){ if(!window.__spankCtx) window.__spankCtx = new (window.AudioContext || window.webkitAudioContext)(); return window.__spankCtx; }
+function playClick(){ const ctx=audioCtx(); const o=ctx.createOscillator(); const g=ctx.createGain(); o.type='square'; o.frequency.value=820; g.gain.value=0.04; o.connect(g); g.connect(ctx.destination); o.start(); o.stop(ctx.currentTime+0.04); }
+function playDing(){ const ctx=audioCtx(); const o=ctx.createOscillator(); const g=ctx.createGain(); o.type='sine'; o.frequency.setValueAtTime(1100,ctx.currentTime); o.frequency.exponentialRampToValueAtTime(1900,ctx.currentTime+0.26); g.gain.setValueAtTime(0.12,ctx.currentTime); g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.28); o.connect(g); g.connect(ctx.destination); o.start(); o.stop(ctx.currentTime+0.28); }
+
+/* ------------------------------
+   UI helpers
+   ------------------------------ */
+function appendHistory(txt){
+  const d = document.createElement('div');
+  d.className = 'history-item';
+  d.textContent = txt;
+  historyEl.prepend(d);
+  while(historyEl.children.length > 300) historyEl.removeChild(historyEl.lastChild);
+}
+function renderStats(){
+  scoreEl.textContent = score;
+  redButtEl.textContent = redButt;
+  totalHitsEl.textContent = totalHits;
+}
+
+/* ------------------------------
+   Random helper
+   ------------------------------ */
+function randInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
+
+/* ------------------------------
+   Theme / Mode apply
+   ------------------------------ */
+function applyTheme(m){
+  mode = m;
+  modeSelect.value = m;
+  if(m === 'normal'){
+    app.classList.remove('theme-dark');
+    app.classList.add('theme-light');
+    app.querySelector('.title').classList.remove('neon-h1');
+    // ensure light visuals
+    document.body.style.background = 'var(--light-bg1)';
+  } else {
+    app.classList.remove('theme-light');
+    app.classList.add('theme-dark');
+    // neon styling: apply neon classes
+    app.querySelector('.title').classList.add('neon-h1');
+    document.body.style.background = 'linear-gradient(180deg,#041018,#031018)';
+  }
+  resultEl.textContent = '模式已切換，準備開始遊戲。';
+}
+
+/* overlay buttons */
+chooseNormal.addEventListener('click', ()=>{ overlay.style.display='none'; applyTheme('normal'); });
+chooseHard.addEventListener('click', ()=>{ overlay.style.display='none'; applyTheme('hard'); });
+modeSelect.addEventListener('change', e => applyTheme(e.target.value));
+
+/* ------------------------------
+   game params per mode
+   ------------------------------ */
+function getParams(isFirst){
+  let p = {};
+  if(mode === 'normal'){
+    p.penMin = 5; p.penMax = 50; p.gainMin = 5; p.gainMax = 20;
+    p.gainProb = 0.36; p.penaltyProb = 0.30;
+    p.halfProb = isFirst?0:0.12; p.zeroProb = isFirst?0:0.06;
+    p.specialProb = 0.06; p.luckyProb = (drawCount>=5)?0.01:0;
+    p.shieldProb = (drawCount>=5)?0.015:0;
+    p.smallPenaltyBoostProb = 0.015; p.doublePenaltyProb = 0.005;
+  } else {
+    p.penMin = 20; p.penMax = 80; p.gainMin = 3; p.gainMax = 15;
+    p.gainProb = 0.30; p.penaltyProb = 0.40;
+    p.halfProb = isFirst?0:0.20; p.zeroProb = isFirst?0:0.12;
+    p.specialProb = 0.08; p.luckyProb = (drawCount>=5)?0.008:0;
+    p.shieldProb = 0; p.smallPenaltyBoostProb = 0.02; p.doublePenaltyProb = 0.01;
+  }
+  return p;
+}
+
+/* ------------------------------
+   roll animation (progressively slows)
+   ------------------------------ */
+function startRollAnimation(){
+  if(rolling) return;
+  rolling = true;
+  drawBtn.disabled = true;
+  stopBtn.disabled = false;
+  rollStep = 0;
+  rollMax = randInt(18,28);
+  const baseSpeed = 50;
+
+  function tick(){
+    const tool = tools[randInt(0,tools.length-1)];
+    const previewMin = (mode==='normal'?5:20);
+    const previewMax = (mode==='normal'?50:80);
+    const hitsPreview = randInt(previewMin, previewMax);
+    resultEl.textContent = `${tool} ${hitsPreview} 下`;
+    playClick();
+
+    rollStep++;
+    if(rollStep > rollMax){
+      if(rollTimer){ clearTimeout(rollTimer); rollTimer = null; }
+      finalizeDraw();
+      return;
+    }
+    const nextDelay = baseSpeed + Math.floor(rollStep*rollStep * 0.8);
+    rollTimer = setTimeout(tick, nextDelay);
+  }
+  tick();
+}
+
+/* ------------------------------
+   finalizeDraw: 核心機率 / 行為
+   ------------------------------ */
+function finalizeDraw(){
+  if(rollTimer){ clearTimeout(rollTimer); rollTimer = null; }
+  const isFirst = !gameStarted;
+  drawCount++;
+  gameStarted = true;
+
+  const p = getParams(isFirst);
+  const rnd = Math.random();
+
+  // boundaries
+  const gainUpper = p.gainProb;
+  const penaltyUpper = gainUpper + p.penaltyProb;
+  const halfUpper = penaltyUpper + p.halfProb;
+  const zeroUpper = halfUpper + p.zeroProb;
+  const specialUpper = zeroUpper + p.specialProb;
+  const luckyUpper = specialUpper + p.luckyProb;
+  const shieldUpper = luckyUpper + p.shieldProb;
+
+  let displayMsg = '';
+
+  // GAIN (加分籤)
+  if(rnd < gainUpper){
+    let pts = randInt(p.gainMin, p.gainMax);
+    if(luckyDouble){ pts *= 2; luckyDouble = false; displayMsg = `🎉 幸運加倍！加分 ${pts} 分`; }
+    else displayMsg = `加分 ${pts} 分`;
+    score += pts;
+    playDing();
+  }
+  // PENALTY (懲罰籤)
+  else if(rnd < penaltyUpper){
+    if(shieldActive){
+      displayMsg = '🛡️ 護盾生效，懲罰免除！';
+      shieldActive = false;
+      playDing();
+    } else {
+      let times = randInt(p.penMin, p.penMax);
+      // rare extra events
+      if(Math.random() < p.doublePenaltyProb){
+        times *= 2;
+        displayMsg = `雙重懲罰！`;
+      } else if(Math.random() < p.smallPenaltyBoostProb){
+        const extra = randInt(10,20);
+        times += extra;
+        displayMsg = `懲罰次數增加 ${extra} 下！`;
+      } else {
+        displayMsg = '';
+      }
+      if(nextTriple){
+        times *= 3;
+        nextTriple = false;
+        displayMsg = (displayMsg?displayMsg + ' ':'') + '（特效：次數 ×3）';
+      }
+      const toolIdx = randInt(0, tools.length-1);
+      displayMsg = `${tools[toolIdx]} ${times} 下` + (displayMsg?(' · '+displayMsg):'');
+      totalHits += times;
+      redButt += 1;
+      playDing();
+    }
+  }
+  // HALF
+  else if(rnd < halfUpper){
+    score = Math.floor(score/2);
+    displayMsg = '💔 事件：分數減半！';
+    playDing();
+  }
+  // ZERO
+  else if(rnd < zeroUpper){
+    score = 0;
+    displayMsg = '💀 事件：分數歸零！';
+    playDing();
+  }
+  // SPECIAL
+  else if(rnd < specialUpper){
+    // choose special subtype
+    const specials = [];
+    specials.push({k:'nextTriple',w:1});
+    specials.push({k:'redPlus',w:1});
+    specials.push({k:'redMinus',w:1});
+    if(mode==='normal') specials.push({k:'shield',w:1});
+    if(mode==='normal') specials.push({k:'scoreDouble',w:1});
+    let sumW = specials.reduce((s,it)=>s+it.w,0);
+    let r = Math.random()*sumW;
+    let pick = specials.find(it => { r -= it.w; return r <= 0; }).k;
+
+    if(pick === 'nextTriple'){ nextTriple = true; displayMsg = '🌟 特殊事件：下一輪懲罰次數 ×3！'; }
+    else if(pick === 'shield'){ shieldActive = true; displayMsg = '🛡️ 特殊事件：獲得護盾（下一次懲罰免疫）！'; }
+    else if(pick === 'redPlus'){ redButt += 1; displayMsg = '🔺 紅屁屁值 +1'; }
+    else if(pick === 'redMinus'){ redButt = Math.max(0, redButt - 1); displayMsg = '🔻 紅屁屁值 -1'; }
+    else if(pick === 'scoreDouble'){ luckyDouble = true; displayMsg = '🍀 特殊事件：下次加分翻倍！'; }
+    playDing();
+  }
+  // LUCKY
+  else if(rnd < luckyUpper){
+    luckyDouble = true;
+    displayMsg = '🍀 幸運事件：下次加分翻倍！';
+    playDing();
+  }
+  // SHIELD (rare)
+  else if(rnd < shieldUpper){
+    if(mode === 'normal'){ shieldActive = true; displayMsg = '🛡️ 護盾事件：下一次懲罰免疫！'; playDing(); }
+    else displayMsg = '（無事件）';
+  }
+  else {
+    displayMsg = '（無事件）';
+  }
+
+  if(isFirst) gameStarted = true;
+  renderStats();
+
+  // show & history
+  resultEl.innerHTML = `<span class="pop">${displayMsg}</span>`;
+  appendHistory(`${displayMsg}（分數：${score}，紅屁屁：${redButt}）`);
+
+  // check end
+  if(score >= 100){
+    resultEl.textContent = `懲罰結束！總共挨打 ${totalHits} 下！🎉`;
+    appendHistory(`*** 懲罰結束：總共挨打 ${totalHits} 下 ***`);
+    drawBtn.disabled = true; stopBtn.disabled = true; rolling = false;
+    // apply neon styles in dark mode to highlight final
+    if(mode === 'hard'){ resultEl.classList.add('neon-result'); }
+    return;
+  }
+
+  // finish rolling state
+  rolling = false; drawBtn.disabled = false; stopBtn.disabled = true;
+}
+
+/* ------------------------------
+   controls: draw / stop / reset
+   ------------------------------ */
+drawBtn.addEventListener('click', ()=>{ if(!rolling) startRollAnimation(); });
+stopBtn.addEventListener('click', ()=>{
+  if(!rolling) return;
+  if(rollTimer){ clearTimeout(rollTimer); rollTimer = null; }
+  finalizeDraw();
+});
+resetBtn.addEventListener('click', ()=>{
+  if(rollTimer){ clearTimeout(rollTimer); rollTimer = null; }
+  rolling = false; drawBtn.disabled = false; stopBtn.disabled = true;
+  score = 0; redButt = 5; totalHits = 0; drawCount = 0; gameStarted = false;
+  nextTriple = false; shieldActive = false; luckyDouble = false;
+  historyEl.innerHTML = ''; resultEl.textContent = '已重新開始（分數與紀錄已重置）';
+  renderStats();
+});
+
+/* init */
+renderStats(); stopBtn.disabled = true;
+</script>
+</body>
+</html>
