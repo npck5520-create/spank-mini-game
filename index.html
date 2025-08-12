@@ -6,15 +6,81 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <style>
 
-/* 手機全螢幕優化 */
+/* 手機完全穩定版 RWD */
+@media (max-width: 768px) {
+  body { padding: 10px; font-size: 14px; }
+  h1 { font-size: 2em; text-align: center; }
+  .status { 
+    flex-direction: column; 
+    gap: 10px; 
+    font-size: 1em; 
+    align-items: center; 
+  }
+  /* 模式選擇與狀態區塊置中 */
+  select { font-size: 1.1em; padding: 8px; max-width: 100%; }
+  
+  /* 按鈕區域確保可點擊且不重疊 */
+  .buttons { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 10px; 
+    width: 100%; 
+    max-width: 320px; 
+    margin: 0 auto; 
+    position: relative;
+    z-index: 1000;
+  }
+  button { 
+    font-size: 1.2em; 
+    padding: 14px; 
+    min-height: 50px; 
+    width: 100%; 
+    border-radius: 10px;
+  }
+  /* 歷史紀錄高度限制 */
+  #history { 
+    max-height: 25vh; 
+    overflow-y: auto; 
+    font-size: 0.9em; 
+    position: relative; 
+    z-index: 1;
+  }
+  /* 抽籤結果顯示區塊 */
+  #result { 
+    font-size: 1.4em; 
+    padding: 10px; 
+    word-break: break-word; 
+    text-align: center; 
+    position: relative; 
+    z-index: 1;
+  }
+}
+@media (max-width: 480px) {
+  h1 { font-size: 1.6em; }
+  .status { font-size: 0.9em; }
+  button { font-size: 1.1em; padding: 12px; min-height: 46px; }
+  #result { font-size: 1.2em; }
+}
+
+
+/* 手機全螢幕優化 + 按鈕可點擊保證 */
 @media (max-width: 768px) {
   body { padding: 10px; font-size: 14px; }
   h1 { font-size: 2em; text-align: center; }
   .status { flex-direction: column; gap: 10px; font-size: 1em; align-items: center; }
-  .buttons { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 320px; margin: 0 auto; }
+  .buttons { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 10px; 
+    width: 100%; 
+    max-width: 320px; 
+    margin: 0 auto; 
+    position: relative;
+    z-index: 1000; /* 確保在最上層可點 */
+  }
   button { font-size: 1.2em; padding: 14px; min-height: 48px; width: 100%; }
-  #history { max-height: 25vh; overflow-y: auto; font-size: 0.9em; }
-  #result { font-size: 1.4em; padding: 10px; word-break: break-word; text-align: center; }
+  #history { max-height: 25vh; overflow-y: auto; font-size: 0.9em; position: relative; z-index: 1; }
+  #result { font-size: 1.4em; padding: 10px; word-break: break-word; text-align: center; position: relative; z-index: 1; }
 }
 @media (max-width: 480px) {
   h1 { font-size: 1.6em; }
