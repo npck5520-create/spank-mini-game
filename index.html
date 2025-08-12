@@ -6,6 +6,56 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <style>
 
+/* 歷史紀錄固定高度，避免按鈕被擠跑 */
+@media (max-width: 768px) {
+  #history {
+    max-height: 25vh !important; /* 限制歷史紀錄高度為螢幕的25% */
+    overflow-y: auto !important; /* 超出時內部滾動 */
+    padding-bottom: 5px;
+  }
+  #historyList {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  #historyList li {
+    word-break: break-word;
+    padding: 4px 0;
+    border-bottom: 1px solid #eee;
+  }
+}
+
+
+/* 手機防跑版按鈕布局 */
+@media (max-width: 768px) {
+  .buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    width: 100%;
+    max-width: 400px;
+    margin: 10px auto 0 auto;
+    justify-content: center;
+    position: relative;
+    z-index: 1000;
+  }
+  .buttons button {
+    flex: 1 1 100%;
+    font-size: 1.2em;
+    min-height: 50px;
+    padding: 12px;
+    border-radius: 10px;
+  }
+  #result {
+    margin-bottom: 10px;
+  }
+  #history {
+    max-height: 25vh;
+    overflow-y: auto;
+  }
+}
+
+
 /* 手機完全穩定版 RWD */
 @media (max-width: 768px) {
   body { padding: 10px; font-size: 14px; }
