@@ -6,20 +6,20 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <style>
 
-/* 手機優化 RWD */
+/* 手機全螢幕優化 */
 @media (max-width: 768px) {
   body { padding: 10px; font-size: 14px; }
-  h1 { font-size: 2em; }
-  .status { flex-direction: column; gap: 10px; font-size: 1em; }
-  button { font-size: 1.2em; padding: 14px; min-height: 48px; flex: 1 1 calc(50% - 10px); }
-  .buttons { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
-  #history { max-height: 30vh; overflow-y: auto; font-size: 0.9em; }
-  #result { font-size: 1.4em; padding: 10px; word-break: break-word; }
+  h1 { font-size: 2em; text-align: center; }
+  .status { flex-direction: column; gap: 10px; font-size: 1em; align-items: center; }
+  .buttons { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 320px; margin: 0 auto; }
+  button { font-size: 1.2em; padding: 14px; min-height: 48px; width: 100%; }
+  #history { max-height: 25vh; overflow-y: auto; font-size: 0.9em; }
+  #result { font-size: 1.4em; padding: 10px; word-break: break-word; text-align: center; }
 }
 @media (max-width: 480px) {
   h1 { font-size: 1.6em; }
   .status { font-size: 0.9em; }
-  button { font-size: 1em; padding: 12px; min-height: 44px; }
+  button { font-size: 1.1em; padding: 12px; min-height: 46px; }
   #result { font-size: 1.2em; }
 }
 
