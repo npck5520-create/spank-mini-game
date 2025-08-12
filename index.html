@@ -6,6 +6,290 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <style>
 
+/* 整體最大寬度與置中 */
+.layout {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/* 左右欄比例 */
+.left-panel {
+  flex: 0 0 60%;
+  max-width: 60%;
+}
+.right-panel {
+  flex: 0 0 40%;
+  max-width: 40%;
+}
+
+/* 抽籤結果區塊加大與間距 */
+#result {
+  min-height: 120px;
+  margin-bottom: 15px;
+}
+
+/* 歷史紀錄高度限制更小，防止擠壓 */
+#historyList {
+  max-height: 12vh;
+  overflow-y: auto;
+}
+
+/* 手機版恢復滿版顯示 */
+@media (max-width: 768px) {
+  .left-panel, .right-panel {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+}
+
+
+/* 優化按鈕外觀與間距 */
+.buttons button {
+  padding: 12px 20px;
+  font-size: 1.1em;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* 按鈕顏色區分 */
+#drawBtn {
+  background-color: #ff85a2;
+  color: white;
+}
+#stopBtn {
+  background-color: #f9d56e;
+  color: black;
+}
+#resetBtn {
+  background-color: #9be3de;
+  color: black;
+}
+
+/* hover 效果 */
+.buttons button:hover {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
+
+/* disabled 狀態 */
+.buttons button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+
+/* 左欄改為垂直排列 */
+.left-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* 抽籤結果字體自適應大小 */
+#result {
+  font-size: clamp(1.2em, 2vw, 1.8em);
+  padding: 15px;
+}
+
+/* 按鈕區自動換行且保持間距 */
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+/* 右欄固定寬度，防止擠壓左欄 */
+.right-panel {
+  flex: 1 1 300px;
+  min-width: 300px;
+  max-width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  word-break: break-word;
+}
+
+/* 桌機模式確保左右並列 */
+.layout {
+  align-items: flex-start;
+}
+
+/* 手機版上下排列 */
+@media (max-width: 768px) {
+  .left-panel, .right-panel {
+    flex: 1 1 100%;
+    max-width: 100%;
+    min-width: unset;
+  }
+}
+
+
+/* 調整 layout 對齊，避免垂直置中導致跑版 */
+.layout {
+  align-items: flex-start;
+}
+
+/* 左欄：固定最大寬度，允許縮小 */
+.left-panel {
+  flex: 1 1 500px;
+  max-width: 500px;
+  min-width: 300px;
+}
+
+/* 抽籤結果字體大小自適應 */
+#result {
+  font-size: clamp(1.2em, 2vw, 1.8em);
+}
+
+/* 右欄：固定最小寬度，防止被擠壓，超出換行 */
+.right-panel {
+  flex: 1 1 300px;
+  min-width: 300px;
+  max-width: 100%;
+  overflow-x: hidden;
+  word-break: break-word;
+}
+
+/* 手機版仍然上下佈局 */
+@media (max-width: 768px) {
+  .left-panel, .right-panel {
+    flex: 1 1 100%;
+    max-width: 100%;
+    min-width: unset;
+  }
+}
+
+
+/* 固定左右欄寬度比例 */
+.left-panel {
+  flex: 0 0 500px; /* 固定寬度 */
+  max-width: 500px;
+}
+.right-panel {
+  flex: 1;
+  min-width: 300px;
+}
+
+/* 保持手機版上下佈局 */
+@media (max-width: 768px) {
+  .left-panel, .right-panel {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+}
+
+
+/* 抽籤結果卡片樣式 */
+#result {
+  background: linear-gradient(135deg, #fff5f5, #ffe0e0);
+  border: 2px solid #ff8080;
+  border-radius: 12px;
+  padding: 20px;
+  font-size: 1.8em;
+  font-weight: bold;
+  text-align: center;
+  color: #d63333;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 12px rgba(255,128,128,0.3);
+}
+
+
+/* 左右分欄佈局 */
+.layout {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.left-panel {
+  flex: 1 1 50%;
+  min-width: 280px;
+}
+.right-panel {
+  flex: 1 1 40%;
+  min-width: 250px;
+}
+
+/* 手機版上下佈局 */
+@media (max-width: 768px) {
+  .layout {
+    flex-direction: column;
+  }
+  .left-panel, .right-panel {
+    flex: 1 1 100%;
+    min-width: unset;
+  }
+}
+
+/* 調整歷史紀錄框高度 */
+#history {
+  max-height: 15vh !important;
+  overflow-y: auto !important;
+}
+
+/* 手機模式按鈕區間距 */
+@media (max-width: 768px) {
+  .buttons {
+    margin-top: 10px;
+    margin-bottom: 15px;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .buttons {
+    margin-top: 10px;
+    margin-bottom: 15px;
+  }
+}
+
+
+/* 垂直置中整體版面（僅在內容高度小於螢幕時） */
+html, body {
+  height: 100%;
+}
+body.center-layout {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* 歷史紀錄框更小（手機版） */
+@media (max-width: 768px) {
+  #history {
+    max-height: 15vh !important;
+    overflow-y: auto !important;
+  }
+}
+
+
+/* 按鈕區固定在畫面正中央 */
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 0 auto;
+}
+@media (max-width: 768px) {
+  .buttons {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+  }
+  .buttons button {
+    flex: 1 1 100%;
+    min-height: 50px;
+    font-size: 1.2em;
+  }
+}
+
+
 /* 歷史紀錄固定高度，避免按鈕被擠跑 */
 @media (max-width: 768px) {
   #history {
@@ -221,6 +505,7 @@
 </style>
 </head>
 <body>
+<div class="layout"><div class="left-panel" class=\"center-layout\">
   <!-- mode choose overlay -->
   <div id="modeSelectOverlay" role="dialog" aria-modal="true">
     <div class="modeBox">
@@ -262,7 +547,7 @@
 
         <div id="result">請先選擇模式（或按開始抽籤）</div>
 
-        <div id="history" aria-live="polite" aria-label="抽籤歷史紀錄"></div>
+        </div><div class="right-panel"><div id="history" aria-live="polite" aria-label="抽籤歷史紀錄"></div>
       </div>
 
       <div class="right">
